@@ -29,8 +29,8 @@ namespace shooter
             PCMSwitch LightSwitch = new PCMSwitch(pcm, PCMLightChannel);
             PCMSolenoid ShooterSolenoid = new PCMSolenoid(pcm, PCMShooterSolenoidChannel);
             Controller gamepad = new Controller();
-            ControllerWatchdog controllerWatchdog = new ControllerWatchdog(gamepad, 2000); //Treat controller as disconnected after 2 seconds of the same input
-            DualMotorTankChassis robotChassis = new DualMotorTankChassis(Motor1, Motor2);
+            ControllerWatchdog controllerWatchdog = new ControllerWatchdog(gamepad, 1000); //Treat controller as disconnected after 2 seconds of the same input
+            QuadMotorTankChassis robotChassis = new QuadMotorTankChassis(Motor1, Motor2,Motor3, Motor4);
 
 
             
@@ -50,101 +50,16 @@ namespace shooter
                 {
                     CTRE.Phoenix.Watchdog.Feed();
                 }
-                /*
+
+
                 if (gamepad.B)
-                    ShooterSolenoid.TurnOn();
-                else
-                    ShooterSolenoid.TurnOff();
-                */
-                /*
-                bool[] buttonarray = new bool[30];
-                gamePad.GetButtons(buttonarray);
-
-                bool buttonPressed = false;
-                StringBuilder sB = new StringBuilder();
-                */
-                /*
-                for (int i = 0; i < buttonarray.Length; i++)
-                {
-                    if (buttonarray[i])
-                    {
-                        Debug.Print("Button " + i.ToString() + " pressed");
-                    }
-                }
-*/
-                float[] axises = new float[10];
-                if (gamepad.APressed)
-                {
-
-                    Debug.Print("Left H: " + gamepad.LeftThumbStickHorizontalAxisValue);
-                    Debug.Print("Left V: " + gamepad.LeftThumbStickVerticalAxisValue);
-                    Debug.Print("Right H: " + gamepad.RightThumbStickHorizontalAxisValue);
-                    Debug.Print("Right V: " + gamepad.RightThumbStickVerticalAxisValue);
-                    Debug.Print("Left Trig: " + gamepad.LeftTriggerValue);
-                    Debug.Print("Right Trig: " + gamepad.RightTriggerValue);
-
-                }
-
-                if (gamepad.Y)
-                {
-
-                    ShooterSolenoid.TurnOn();
-
-                }
-                else
-                {
-                    ShooterSolenoid.TurnOff();
-                }
-                /*
-                if (gamepad.BPressed)
-                {
-                    ShooterSolenoid.TurnOn();
-                }
-                
-
-                if (!gamepad.B)
-                {
-                    ShooterSolenoid.TurnOff();
-                
-                */
-
-                if (gamepad.X)
                 {
                     PCMHornSwitch.TurnOn();
                 } else
                 {
                     PCMHornSwitch.TurnOff();
                 }
-                if (gamepad.B)
-                {
-                    LightSwitch.TurnOn();
-                }
-                else
-                {
-                    LightSwitch.TurnOff();
-                }
-                /*
-                if (gamepad.StartPressed)
-                {
-                    ShooterSolenoid.TurnOn();
-                }
-                else
-                {
-                    ShooterSolenoid.TurnOff();
-                }*/
 
-                /*if (gamepad.RB)
-                {
-                    Motor3.SetSpeed(ShooterAngleSpeed);
-                }
-                else if (gamepad.LB)
-                {
-                    Motor3.SetSpeed(ShooterAngleSpeed * -1);
-                }
-                else
-                {
-                    Motor3.SetSpeed(0);
-                }*/
 
                 float ForwardReverseSpeed;
                 if (gamepad.RightTriggerValue > 0)
