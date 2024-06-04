@@ -37,10 +37,15 @@ namespace shooter
 
             bool Runone = true;
             Motor2.Invert = true;
+            Motor1.Invert = true;
             Motor2.MaxForward = 1666; //33% power
             Motor2.MaxReverse = 1334;
             Motor1.MaxForward = 1666;
             Motor1.MaxReverse = 1334;
+            Motor4.MaxForward = 1666; //33% power
+            Motor4.MaxReverse = 1334;
+            Motor3.MaxForward = 1666;
+            Motor3.MaxReverse = 1334;
 
 
             /* loop forever */

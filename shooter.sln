@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.32929.386
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "shooter", "shooter\shooter.csproj", "{BC34C154-A1F7-436F-991E-6EA4D2E53D77}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParadeElizabeth", "shooter\ParadeElizabeth.csproj", "{BC34C154-A1F7-436F-991E-6EA4D2E53D77}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
