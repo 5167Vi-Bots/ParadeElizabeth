@@ -23,7 +23,7 @@ namespace shooter
             PWMMotor Motor1 = new PWMMotor(CTRE.HERO.IO.Port3.PWM_Pin4);
             PWMMotor Motor2 = new PWMMotor(CTRE.HERO.IO.Port3.PWM_Pin6);
             PWMMotor Motor3 = new PWMMotor(CTRE.HERO.IO.Port3.PWM_Pin7);
-            PWMMotor Motor4 = new PWMMotor(CTRE.HERO.IO.Port3.PWM_Pin8);
+            PWMMotor Motor4 = new PWMMotor(CTRE.HERO.IO.Port3.PWM_Pin9);
             UsbHostDevice.GetInstance(0).SetSelectableXInputFilter(UsbHostDevice.SelectableXInputFilter.XInputDevices);
             PCMSwitch PCMHornSwitch = new PCMSwitch(pcm, PCMHornChannel);
             PCMSwitch LightSwitch = new PCMSwitch(pcm, PCMLightChannel);
