@@ -11,10 +11,8 @@ namespace shooter
             //Configuration
             const int PCMCANChannel = 6;
             const int PCMShooterSolenoidChannel = 1;
-            const int PCMHornChannel = 0;
-            const int PCMLightChannel = 2;
 
-            const float ShooterAngleSpeed = .25f;
+
 
 
             //Initialization
@@ -25,9 +23,12 @@ namespace shooter
             PWMMotor Motor3 = new PWMMotor(CTRE.HERO.IO.Port3.PWM_Pin7);
             PWMMotor Motor4 = new PWMMotor(CTRE.HERO.IO.Port3.PWM_Pin9);
             UsbHostDevice.GetInstance(0).SetSelectableXInputFilter(UsbHostDevice.SelectableXInputFilter.XInputDevices);
-            PCMSwitch PCMHornSwitch = new PCMSwitch(pcm, PCMHornChannel);
-            PCMSwitch LightSwitch = new PCMSwitch(pcm, PCMLightChannel);
-            PCMSolenoid ShooterSolenoid = new PCMSolenoid(pcm, PCMShooterSolenoidChannel);
+
+            PCMSolenoid LeftArmUpSolenoid = new PCMSolenoid(pcm, 3);
+            PCMSolenoid LeftArmDownSolenoid = new PCMSolenoid(pcm, 0);
+            PCMSolenoid RightArmUpSolenoid = new PCMSolenoid(pcm, 7);
+            PCMSolenoid RightArmDownSolenoid = new PCMSolenoid(pcm, 4);
+            
             Controller gamepad = new Controller();
             ControllerWatchdog controllerWatchdog = new ControllerWatchdog(gamepad, 1000); //Treat controller as disconnected after 2 seconds of the same input
             QuadMotorTankChassis robotChassis = new QuadMotorTankChassis(Motor1, Motor2,Motor3, Motor4);
@@ -47,6 +48,13 @@ namespace shooter
             Motor3.MaxForward = 1666;
             Motor3.MaxReverse = 1334;
 
+            pcm.StartCompressor();
+            //Run the compressor while feeding the watchdog and ignoring controller input. If the watchdog isnt fed, the compressor gets shut off.
+            while (!pcm.GetPressureSwitchValue())
+            {
+                CTRE.Phoenix.Watchdog.Feed();
+
+            }
 
             /* loop forever */
             while (true)
@@ -57,13 +65,14 @@ namespace shooter
                 }
 
 
-                if (gamepad.B)
+                /*if (gamepad.B)
                 {
                     PCMHornSwitch.TurnOn();
                 } else
                 {
                     PCMHornSwitch.TurnOff();
                 }
+                */
 
 
                 float ForwardReverseSpeed;
@@ -129,8 +138,27 @@ namespace shooter
 
 
 
+                if (gamepad.LB)
+                {
+                    LeftArmDownSolenoid.TurnOff();
+                    LeftArmUpSolenoid.TurnOn();
+                }
+                else
+                {
+                    LeftArmUpSolenoid.TurnOff();
+                    LeftArmDownSolenoid.TurnOn();
+                }
 
-
+                if (gamepad.RB)
+                {
+                    RightArmDownSolenoid.TurnOff();
+                    RightArmUpSolenoid.TurnOn();
+                }
+                else
+                {
+                    RightArmUpSolenoid.TurnOff();
+                    RightArmDownSolenoid.TurnOn();
+                }
 
 
 
