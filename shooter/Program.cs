@@ -28,9 +28,12 @@ namespace shooter
             PCMSolenoid LeftArmDownSolenoid = new PCMSolenoid(pcm, 0);
             PCMSolenoid RightArmUpSolenoid = new PCMSolenoid(pcm, 7);
             PCMSolenoid RightArmDownSolenoid = new PCMSolenoid(pcm, 4);
-            
+
+            PCMSolenoid PCMHornSwitch = new PCMSolenoid(pcm,5);
+            PCMSolenoid PCMLightSwitch = new PCMSolenoid(pcm,1);
+
             Controller gamepad = new Controller();
-            ControllerWatchdog controllerWatchdog = new ControllerWatchdog(gamepad, 1000); //Treat controller as disconnected after 2 seconds of the same input
+            ControllerWatchdog controllerWatchdog = new ControllerWatchdog(gamepad, 5000); //Treat controller as disconnected after 2 seconds of the same input
             QuadMotorTankChassis robotChassis = new QuadMotorTankChassis(Motor1, Motor2,Motor3, Motor4);
 
 
@@ -39,40 +42,68 @@ namespace shooter
             bool Runone = true;
             Motor2.Invert = true;
             Motor1.Invert = true;
-            Motor2.MaxForward = 1666; //33% power
-            Motor2.MaxReverse = 1334;
-            Motor1.MaxForward = 1666;
-            Motor1.MaxReverse = 1334;
-            Motor4.MaxForward = 1666; //33% power
-            Motor4.MaxReverse = 1334;
-            Motor3.MaxForward = 1666;
-            Motor3.MaxReverse = 1334;
+
+            int MaxForward = 500;
+            int MaxReverse = -500; 
+
+            double PercentPower = .5;
+
+            uint MaxForwardCalc = (uint)((MaxForward * PercentPower) + 1500);
+            uint MaxReverseCalc = (uint)((MaxReverse * PercentPower) + 1500);
+
+
+
+
+            Motor2.MaxForward = MaxForwardCalc; //33% power
+            Motor2.MaxReverse = MaxReverseCalc;
+            Motor1.MaxForward = MaxForwardCalc;
+            Motor1.MaxReverse = MaxReverseCalc;
+            Motor4.MaxForward = MaxForwardCalc; //33% power
+            Motor4.MaxReverse = MaxReverseCalc;
+            Motor3.MaxForward = MaxForwardCalc;
+            Motor3.MaxReverse = MaxReverseCalc;
+
+            Debug.Print(MaxForwardCalc.ToString());
+            Debug.Print(MaxReverseCalc.ToString());
 
             pcm.StartCompressor();
             //Run the compressor while feeding the watchdog and ignoring controller input. If the watchdog isnt fed, the compressor gets shut off.
             while (!pcm.GetPressureSwitchValue())
             {
+                //Debug.Print(MaxForwardCalc.ToString());
+                //Debug.Print(MaxReverseCalc.ToString());
                 CTRE.Phoenix.Watchdog.Feed();
-
+                robotChassis.SetSpeed(0, 0);
             }
 
             /* loop forever */
             while (true)
             {
-                if (gamepad.IsConnected)
-                {
-                    CTRE.Phoenix.Watchdog.Feed();
-                }
+                //Debug.Print(MaxForwardCalc.ToString());
+                //Debug.Print(MaxReverseCalc.ToString());
+             if (gamepad.IsConnected)
+             {
+                CTRE.Phoenix.Watchdog.Feed();
+            }
 
 
-                /*if (gamepad.B)
+                if (gamepad.B)
                 {
                     PCMHornSwitch.TurnOn();
                 } else
                 {
                     PCMHornSwitch.TurnOff();
                 }
-                */
+
+                if (gamepad.Y)
+                {
+                    PCMLightSwitch.TurnOn();
+                }
+                else
+                {
+                    PCMLightSwitch.TurnOff();
+                }
+
 
 
                 float ForwardReverseSpeed;

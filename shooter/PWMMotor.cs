@@ -35,7 +35,7 @@ namespace shooter
         {
             if (!CTRE.Phoenix.Watchdog.IsEnabled())
             {
-                Debug.Print("Watchdog is off, not enabling output");
+                //Debug.Print("Watchdog is off, not enabling output");
                 return;
             }
                 if (SpeedPercent < -1)
